@@ -6,7 +6,7 @@ export const Checkbox = () => {
     return (
         <div className="checkbox">
             <label className="radio-container" >
-                I agree to the terms and conditions of <span>Elsita & Alfredo</span>
+                I agree to the Terms and Conditions of <span>Elsita & Alfredo</span>
                 <input
                     type="checkbox"
                     checked={terms}

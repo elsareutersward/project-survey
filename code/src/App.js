@@ -1,16 +1,21 @@
 import React, { useState } from 'react'
-import { Dropdown } from './question1'
-import { RadioButton1 } from './question2'
-import { RadioButton2 } from './question3'
-import { RadioButton3 } from './question4'
-import { FreeText } from './question5'
-import { ContactDetails } from './contactdetails'
-import { Checkbox } from './checkbox'
 import { Summary } from './summary'
+
+const amountGuests = ["1", "2", "3", "4", "5", "6", "7", "8"];
+const bookDates = ["Thursday", "Friday", "Saturday", "Sunday"];
+const dinnerTimes = ["18.00", "18.30", "19.00", "19.30", "20.00", "20.30", "21.00", "21.30", "22.00"];
 
 export const App = () => {
   /* const [page, setPage] = useState(firstQuestion); */
   const [showSummary, setShowSummary] = useState(false);
+  const [location, setLocation] = useState("");
+  const [amountGuest, setAmountGuest] = useState();
+  const [bookDate, setBookDate] = useState();
+  const [dinnerTime, setDinnerTime] = useState();
+  const  [text, setText] = useState("");
+  const [guestInfo, setGuestInfo] = useState("");
+  const [guestEmail, setGuestEmail] = useState("");
+  const [terms, setTerms] = useState("");
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -31,18 +36,129 @@ export const App = () => {
         </p>
 
         <form onSubmit={handleSubmit}>
-          <Dropdown />
-          <RadioButton1 />
-          <RadioButton2 />
-          <RadioButton3 />
-          <FreeText />
-          <ContactDetails />
-          <Checkbox />
-
+          <div>
+              <h2>Select the restaurant you'd like to visit below, to start your booking!</h2>
+              <label className="dropdown">
+                  <select className="dropdown-style"
+                  onChange={event => setLocation(event.target.value)}
+                  value={location}
+                  required
+                  >
+                      <option value="">Select location:</option>
+                      <option value="Stockholm">Stockholm</option>
+                      <option value="Åre">Åre</option>
+                      <option value="Visby">Visby</option>
+                  </select>
+              </label>
+          </div>
+          <div>
+            <h2>How many will you be?</h2>
+            <div className="radio-buttons">
+               {amountGuests.map(guest => (
+                    <label className="radio-container" key={guest}>
+                        <input 
+                            type="radio"
+                            value={guest}
+                            onChange={event => setAmountGuest(event.target.value)}
+                            checked={amountGuest === guest}
+                        />
+                        <span className="radiomark"></span>
+                        {guest}
+                    </label>
+                ))} 
+            </div>
+          </div>
+          <div>
+            <h2>Select a date:</h2>
+            <div className="radio-buttons">
+                {bookDates.map(date => (
+                    <label className="radio-container" key={date}>
+                        <input 
+                            type="radio"
+                            value={date}
+                            onChange={event => setBookDate(event.target.value)}
+                            checked={bookDate === date}
+                        />
+                        <span className="radiomark"></span>
+                        {date}
+                    </label>
+                ))}
+            </div>
+          </div>
+          <div>
+            <h2>Select a time:</h2>
+            <div className="radio-buttons">
+                {dinnerTimes.map(time => (
+                    <label className="radio-container" key={time}>
+                        <input 
+                            type="radio"
+                            value={time}
+                            onChange={event => setDinnerTime(event.target.value)}
+                            checked={dinnerTime === time}
+                        />
+                        <span className="radiomark"></span>
+                        {time}
+                    </label>
+                ))}
+            </div>
+          </div>
+          <div>
+            <h2>Please let us know if you have any allergies, food preferences or anything else you want us to know:</h2>
+            <label className="text" >
+                <input
+                    className="text-preferences"
+                    type="text"
+                    onChange={event => setText(event.target.value)}
+                    value={text}
+                />
+            </label>
+          </div>
+          <div className="contact-container">
+            <label className="text">
+                <p>Name:</p>
+                <input
+                    className="text-contact"
+                    placeholder="Name"
+                    type="text"
+                    onChange={event => setGuestInfo(event.target.value)}
+                    value={guestInfo}
+                    required
+                />
+            </label>
+            <label className="text">
+                <p>Email:</p>
+                <input
+                    className="text-contact"
+                    placeholder="user@domain.com"
+                    type="email"
+                    onChange={event => setGuestEmail(event.target.value)}
+                    value={guestEmail}
+                    required
+                />
+            </label>
+          </div>
+          <div className="checkbox">
+            <label className="radio-container" >
+                I agree to the Terms and Conditions of <span>Elsita & Alfredo</span>
+                <input
+                    type="checkbox"
+                    checked={terms}
+                    onChange={event => setTerms(event.target.checked)}
+                    required
+                />
+                <span className="checkmark"></span>
+            </label>
+          </div>
           <button type="submit">Submit</button> 
         </form>
 
-        {showSummary && <Summary />
+        {showSummary && <Summary 
+          name={guestInfo}
+          date={bookDate}
+          time={dinnerTime}
+          guests={amountGuest}
+          location={location}
+        />
         }
     </div>
   );
